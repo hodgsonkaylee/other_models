@@ -1,0 +1,245 @@
+\documentclass{beamer}
+\usetheme{Singapore}
+
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{breqn}
+\usepackage{natbib}%,bibspacing}
+\usepackage{graphicx}
+\usepackage{bm}
+%\usepackage{geometry}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage[english]{babel}
+\usepackage[autostyle]{csquotes}
+
+\title{Measuring Subordination of Women in the Home}
+\subtitle{A Confirmatory Factor Analysis for Ordinal Variables}
+\author{Kaylee Hodgson}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{itemize}
+\item The WomanStats Project released a multivariate country-level scale in 2017: Patrilineality/Fraternity Syndrome Scale
+\item Combines 11 indicators that measure subordination of women in the household
+\item Scale was built for large-scale analyses - test theory that societies with systematic gender suppression and inequality in the home perform worse on macro-level indicators of success
+\end{itemize}
+\bf{Purpose: Identify whether a single factor is sufficient for the 11 variables.}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Theory of the Syndrome Scale}
+\begin{figure}
+\includegraphics[width=6cm]{TheSyndrome.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Syndrome Scale}
+Combines 11 indicators of the subordination of women in the home: 
+
+\begin{itemize}
+\tiny
+\begin{columns}
+	\begin{column}{0.48\textwidth}
+	\item prevalence of patrilocal marriage
+\item prevalence of brideprice or dowry
+\item prevalence and legality of polygyny
+\item presence of cousin marriage
+\item age of marriage for girls
+\item laws and practices surrounding women's property rights
+	\end{column}
+	\begin{column}{0.48\textwidth}
+	\item presence of son preferences or sex ratio alteration
+\item presence of inequity in family law/custom that favors males
+\item overall level of violence against women in society
+\item presence of societal sanction for femicide
+\item whether there is legal exoneration for rapists who offer to marry their victims 
+	\end{column}
+\end{columns}
+\end{itemize}
+\begin{figure}
+  \begin{centering}
+  \includegraphics[height=4cm,trim={2cm 7cm 2cm 5.1cm},clip]{mapillust.pdf}
+  \label{SynMap}
+    \end{centering}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Path Analysis}
+\begin{itemize}
+\item essentially an extension of multiple regression analysis, but on multiple levels
+\item special case of structural equation modeling (SEM) - no latent variable
+\item used to evaluate the ``causal" theory behind the scale - should be cautious in interpretation
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Path Analysis Results}
+\begin{figure}
+\centering
+  \includegraphics[width=10cm,trim={0cm 4cm .5cm 4cm},clip]{PathAnalysis.pdf}
+  \label{fig:path}
+\end{figure}
+\tiny
+RMSEA=0.205 \& SRMR=0.3 (standard is that they should both be below 0.08)
+\itemize
+\footnotesize
+\item Possible reason for poor fit: situations described in the theory are sometimes only partially covered by a single variable, and some variables describe multiple phenomena at once
+\end{frame}
+
+\begin{frame}
+\frametitle{Confirmatory Factor Analysis (CFA)}
+\itemize
+\item All variables are ordinal (scales with 2-5 levels)
+\item CFA using maximum likelihood estimators performs poorly with ordinal data that has few levels
+\item Other options considered: Weighted least square (WLS), Diagonally weighted least square (DWLS), and Unweighted Least Square (ULS)
+\item WLS  - poor performance when sample size is small
+\item DWLS - less accurate estimates and less precise standard errors
+\end{frame}
+
+\begin{frame}
+\frametitle{Unweighted Least Squares}
+The general structure for a least squares estimator is:
+
+\begin{equation}
+q(\boldsymbol{\theta};\mathbf{S}) = (\text{vech} \mathbf{S} - \text{vech} \boldsymbol{\Sigma}[\boldsymbol{\theta}])' \hat{\mathbf{V}}^{-1}(\text{vech} \mathbf{S} - \text{vech} \boldsymbol{\Sigma}[\boldsymbol{\theta}]),
+\end{equation}
+
+where the method finds $\hat{\boldsymbol{\theta}}_{LS}$ that minimizes $q(\boldsymbol{\theta};\mathbf{S})$. $q(\hat{\boldsymbol{\theta}}_{LS};\mathbf{S})$ approaches a chi-squared distribution ($\chi^2_{p*-q,\alpha}$, $p*=\frac{1}{2}p(p+1)$). 
+
+In the case of the unweighted least square model, $\hat{\mathbf{V}}^{-1}=\mathbf{I}$.
+\end{frame}
+
+\begin{frame}
+\frametitle{Linear Combination Equations for CFA Models}
+\begin{table}[htb]
+\tiny
+    \centering
+    \begin{tabular}{l|r|r}
+      &  One-Factor Model & Two-Factor Models \\
+     \hline
+    Polygyny & $y_1 = \lambda_1 f_1 + \epsilon_1$ & $y_1 = f_2 + \epsilon_1$  \\
+    Laws/Customs Favoring Males & $y_2 = \lambda_2 f_1 + \epsilon_2$ &  $y_2 = \lambda_{21} f_1 + \lambda_{22} f_2 + \epsilon_2$  \\
+    Bride Price/Dowry & $y_3 = \lambda_3 f_1 + \epsilon_3$ & $y_3 = \lambda_{31} f_1 + \lambda_{32} f_2 + \epsilon_3$  \\
+    Property Rights & $y_4 = \lambda_4 f_1 + \epsilon_4$ & $y_4 = \lambda_{41} f_1 + \lambda_{42} f_2 + \epsilon_4$  \\    
+    Cousin Marriage & $y_5 = \lambda_5 f_1 + \epsilon_5$ & $y_5 = \lambda_{51} f_1 + \lambda_{52} f_2 + \epsilon_5$  \\
+    Age of Marriage & $y_6 = \lambda_6 f_1 + \epsilon_6$ & $y_6 = \lambda_{61} f_1 + \lambda_{62} f_2 + \epsilon_6$  \\
+    Legal Exoneration for Rapists & $y_7 = \lambda_7 f_1 + \epsilon_7$ & $y_7 = \lambda_{71} f_1 + \lambda_{72} f_2 + \epsilon_7$   \\
+    Son Preference & $y_8 = \lambda_8 f_1 + \epsilon_8$ & $y_8 = \lambda_{81} f_1 + \lambda_{82} f_2 + \epsilon_8$  \\
+    Patrilocal Marriage & $y_9 = f_1 + \epsilon_9$ & $y_9 = \lambda_{91} f_1 + \lambda_{92} f_2 + \epsilon_9$   \\
+    Overall Violence & $y_{10} = \lambda_{10} f_1 + \epsilon_{10}$ & $y_{10} = \lambda_{101} f_1 + \lambda_{102} f_2 + \epsilon_{10}$   \\
+    Societal Santion of Femicide & $y_{11} = \lambda_{11} f_1 + \epsilon_{11}$ & $y_{11} = f_1 + \epsilon_{11}$  \\
+    \hline
+    \emph{Only Second-Order CFA} & & ($f_1 = \beta_1 f_3 + e_1$, $f_2 = \beta_2 f_3 + e_2$) \\
+    \end{tabular}
+    \label{diagSyn}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Fit Diagnostics}
+\itemize
+\footnotesize
+\item AGFI: measures the ``proportion of variance accounted for by the estimated population covariance"
+\item NFI: gives the percentage that the model improves the fit from the null model
+\item SRMR measures the difference between the $\mathbf{S}$ matrix for the data and the $\boldsymbol{\Sigma}(\hat{\boldsymbol{\theta}})$ estimated from the model
+\item AVE: the average of the the $R^2$ values in the factor
+\begin{table}[htb]
+    \centering
+    \tiny
+    \begin{tabular}{l|r|r|r|r}
+      & \multicolumn{4}{l}{\textbf{Diagnostics}} \\
+     \hline
+     \textbf{CFA} & AGFI & NFI & SRMR & AVE \\
+     Rule for Good Fit & AGFI $\geq$ 0.90 & NFI $\geq$ 0.95 & SRMR $<$ 0.08  & AVE $>$0.5 \\
+    \hline
+    One-Factor Model & 0.989 & 0.990 & 0.053 & 0.499  \\
+    Two-Factor Model & 0.994 & 0.993 & 0.042 & 0.537  \\
+    Two-Factor Second & 0.993 & 0.993 & 0.044 & 0.548 \\
+    \end{tabular}
+    \label{diag}
+\end{table}
+\itemize
+\item All three models fit well, two-factor models fit only marginally better than one-factor
+\end{frame}
+
+\begin{frame}
+\frametitle{The One-Factor CFA Model}
+\begin{figure}
+\centering
+  \includegraphics[width=10cm,trim={0cm 1cm 0cm 1cm},clip]{CFA.pdf}
+  \label{cfavis}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Variable Estimates}
+\footnotesize
+RMSEA = 0.000, CFI = 1.000
+\begin{table}[htb]
+    \centering
+    \tiny
+    \begin{tabular}{l|r|r|r|r|r}
+     Variable & Estimate & Standard Error & z-value & p-value & $R^2$ \\
+     \hline
+     Patrilocality & 1.00 & & & & 0.46 \\
+     Age of Marriage & 1.33 & 0.09 & 15.16 & 0.00 & 0.38 \\
+     Bride Price/Dowry & 1.519 & 0.10 & 15.70 & 0.00 & 0.75 \\
+     Polygyny & 2.32 & 0.14 & 16.58 & 0.00 & 0.80 \\
+     Violence & 0.956 & 0.072 & 13.37 & 0.00 & 0.46 \\
+     Femicide & 0.621 & 0.05 & 10.43 & 0.00 & 0.36 \\
+     Property Rights & 1.49 & 0.10 & 15.632 & 0.00 & 0.67 \\
+     Cousin Marriage & 1.27 & 0.09 & 14.95 & 0.00 & 0.34 \\
+     Son Preference & 0.45 & 0.06 & 8.20 & 0.00 & 0.12 \\
+     Rape Exemption & 0.23 & 0.05 & 4.59 & 0.00 & 0.09 \\
+     Laws/Customs Favoring Males & 1.84 & 0.11 & 16.28 & 0.00 & 0.89 \\
+    \end{tabular}
+    \label{res}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation Study}
+Common issue with country-level data: 1) data is missing altogether or 2) data is available but poorly measured or estimated
+\footnotesize
+\itemize
+\item 1\%, 5\%, 10\%, 25\%, 50\%, and 90\% of the countries randomly selected using random draws from Bernoulli, p=each percentage
+\item Create two data sets for each percentage value. If Bernoulli draw = 1...
+\item First data set: delete entire row
+\item Second data set: replace observed values in row with randomly drawn values from Binomial distribution, with number of trials equal to number of values in each scale.
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation Study Results}
+\begin{itemize}
+\item RMSEA, CFI, and SRMR estimates don't change
+\item Missing data: $R^2$ values similar and estimates remain significant until 50\% missing, when model will no longer estimate
+\item Poor-quality data: $R^2$ values decrease as percentage reassigned increases, but estimates remain significant. At 50\%, negative $R^2$ values are estimated and all variable estimates become insignificant
+\end{itemize}
+\end{frame} 
+
+\begin{frame}
+\frametitle{Discussion and Conclusion}
+\begin{itemize}
+\item One-factor CFA model fits the 11 indicators well
+\item Path analysis does not confirm the theory of the causal relationship
+\item Future research: find variables that better separate to fit the theory, evaluate whether the actual scale fits the data well
+\end{itemize}
+Overall, I find sufficient evidence to conclude that the single factor fits the data well and significantly describes variation in the individual variables. These results are robust to low to moderate levels of missing or poor-quality data. 
+\end{frame}
+
+
+\end{document}

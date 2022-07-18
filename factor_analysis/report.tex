@@ -1,0 +1,231 @@
+%++++++++++++++++++++++++++++++++++++++++
+\documentclass[letterpaper,11pt]{article}
+\usepackage{tabularx} % extra features for tabular environment
+\usepackage{amsmath}  % improve math presentation
+\usepackage{graphicx} % takes care of graphic including machinery
+\usepackage[margin=1in,letterpaper]{geometry} % decreases margins
+\usepackage{cite} % takes care of citations
+\usepackage[final]{hyperref} % adds hyper links inside the generated pdf file
+\usepackage{fancyvrb} % use to include text files verbatim
+\usepackage{relsize} % use to resize .txt and .R files
+\usepackage{float}
+\hypersetup{
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=blue,        % color of internal links
+	citecolor=blue,        % color of links to bibliography
+	filecolor=magenta,     % color of file links
+	urlcolor=blue         
+}
+%++++++++++++++++++++++++++++++++++++++++
+
+\begin{document}
+
+\title{Measuring Subordination of Women in the Home \\
+      \large{A Confirmatory Factor Analysis for Ordinal Variables}}
+\author{Kaylee B. Hodgson} 
+
+\maketitle
+
+\abstract{In this paper, I evaluate whether one factor to measure the subordination of women in the household is sufficient in representing its 11 sub-indicators. I use a path analysis to evaluate the causal theory, and implement a confirmatory factor analysis to examine both a one-factor and two-factor approach. I find that the path analysis does not support the causal theory, and discuss possible reasons for that. I also find that the one-factor model is a good fit for the 11 indicators, and significantly explains the variation in each of the individual variables.}
+
+\section{Introduction and Background}
+
+In 2017, The WomanStats Project released a multivariate country-level scale, named the Patrilineality/Fraternity Syndrome Scale, that indicates overall treatment of women in the household \cite{womanstats}. This scale combines 11 indicators that measure aspects of the subordination of women in the home. These 11 variables measure the laws and customs surrounding certain marital and familial practices that impact women in a society. This scale was built to empirically test the theory that societies that systematically impose gender suppression and inequality in the home will, as a result, perform worse on macro-level indicators of success, including economic performance, political stability, and security. 
+
+In this paper, I preliminarily implement a path analysis to evaluate the theory of the Syndrome relationship. I then use confirmatory factor analysis for ordinal data to assess the accuracy of this Patrilineality/Fraternity Syndrome Scale in measuring the proposed 11 indicators of the subordination of women at the household level. Additionally, I simulate data to evaluate how well the model fits in situations with poor data quality or missing data, a common issue especially for data from countries that are less developed and/or have higher levels of corruption. 
+
+\subsection{The Syndrome Scale}
+
+The 11 indicators that make up the Patrilineality/Fraternity Syndrome Scale are all scales developed and coded by The WomanStats Project \cite{womanstats}, using both qualitative and quantitative data from a variety of sources, including government documents, journalistic accounts, international government organization (IGO) and non-government organization (NGO) reports, interviews, and scholarly articles. Each of these scales measure data between 2010 and 2015. The variables (including the name of the variable in the database) are: Prevalence and Legality of Polygyny (PW-SCALE-1), Inequitable Family Law and Practice Favoring Males (MUTIVAR-SCALE-3), Bride Price/Dowry/Wedding Costs (MARR-SCALE-3), Women's Property Rights in Law and Practice (LO-SCALE-3), Prevalence and Legality of Cousin Marriage (MARR-SCALE-2), Age of Marriage for Girls in Law and Practice (AOM-SCALE-3), Legal Exoneration for Rapists Offering to Marry Victims (LRW-SCALE-9), Son Preference and Sex Ratios (ISSA-SCALE-1), Prevalence of Patrilocal Marriage (MARR-SCALE-1), Overall Level of Violence against Women (MULTIVAR-SCALE-1), and Societal Sanction for Femicide (MURDER-SCALE-1).
+
+\begin{figure}
+\centering
+
+\begin{minipage}{.4\textwidth}
+  \begin{centering}
+  \includegraphics[width=6cm]{TheSyndrome.png}
+  \end{centering}
+  \caption{Subcomponents and \newline Theory of the Syndrome}
+  \label{fig:subsyn}
+\end{minipage}%
+\begin{minipage}{.55\textwidth}
+\begin{centering}
+\large
+  \textbf{The Syndrome Scale}\par\medskip
+  \includegraphics[width=10cm,trim={2cm 7cm 2cm 5.1cm},clip]{mapillust.pdf}
+  \caption{Map of countries' levels of systematic subordination of women at the household level}
+  \label{SynMap}
+    \end{centering}
+\end{minipage}
+\end{figure}
+
+These 11 indicators were combined into the overall scale based on the theory of how and why this systematic subordination of women is embedded into a society. The summary of the theory behind this scale is represented in Figure \ref{fig:subsyn}. All of the scales are coded so that higher values indicate a worse situation for women, so any value added to a country's score is worse. The distribution of the Syndrom scores across countries is shown in Figure \ref{SynMap}.
+
+The scale ranges from 0 to 16, where 16 indicates a country with the worst level of systematic subordination of women in the household.
+\section{Path Analysis}
+
+I first implement a preliminary path analysis, which is essentially an extension of multiple regression analysis, but tests multiple levels of ``causal" relationships. This analysis is also, in some ways, a special case of structural equation modeling (SEM), excluding any latent variables. This is done as an initial evaluation of the theory behind the scale, which again is summarized in Figure \ref{fig:subsyn}. Of course, the results of the path analysis should be interpreted cautiously because, despite the apparent directionality of the analysis, it cannot adequately prove causality.
+
+\subsection{Results}
+
+The path structure output from the analysis can be found in Figure \ref{fig:path}. While there are some strong relationships along the paths, and most are positive as expected, the model fit is poor. The Root Mean Square Error of Approximation (RMSEA) is 0.205 and the Standardized Root Mean Square Residual (SRMR) is 0.3. Typically, in order to conclude that the model is a good fit, these values should be less than 0.08. 
+
+The causal relationships defined in the theory for the Syndrome are not a good fit in the path analysis used here. One reason for this could be that the situations described in the theory are sometimes only partially covered by a single variable, and some variables describe multiple phenomena at once. The path created in the analysis may therefore not be an accurate portrayal of the path in the theory.
+
+The path analysis only looks for dependencies among the variables by the relationships specified in the structural equations. Poor fit here does not preclude the possibility that these variables fit well into a single factor. Therefore, despite these results, I proceed to the confirmatory factor analysis to evaluate whether the clustering of all 11 indicators is a good fit. 
+
+\begin{figure}
+\centering
+  \textbf{Path Analysis Results}\par\medskip
+  \includegraphics[width=15cm,trim={0cm 4cm 1cm 4cm},clip]{PathAnalysis.pdf}
+  \caption{Results show that there are some strong relationships in the path analysis. The correlation values are the same as the standardized coefficient estimates if there were only two variables in that portion of the model.}
+  \label{fig:path}
+\end{figure}
+
+\section{Confirmatory Factor Analysis}
+
+I implement a confirmatory factor analysis (CFA) to evaluate whether a one-dimensional scale is adequate in representing the 11 components. Each of the 11 variables included in this analysis are ordinal, with anywhere between 2 and 5 levels. While confirmatory factor analysis using maximum likelihood estimators is a useful tool for continuous data that meet multivariate normality assumptions \cite{albright}, this estimation would likely perform poorly with the ordinal data with so few levels. I therefore explore other options for estimation.
+
+Weighted least square (WLS) has been suggested as a method for estimation when ordinal data is used in CFA, however, because of criticisms of its poor performance when the sample size is small, diagonally weighted least square (DWLS) and unweighted least square (ULS) have become the more popular methods for ordinal data \cite{li}. In 2009, Forero, Maydeu-Olivares, and Gallardo-Pujol used a simulation study to compare DWLS and ULS. They found that ULS outperformed DWLS because ULS gave more accurate estimates, more precise standard errors, and better coverage rates \cite{forero}. I therefore use ULS estimation in the CFA model for this analysis.
+
+The general structure for a least squares estimator is:
+
+\begin{equation}
+q(\boldsymbol{\theta};\mathbf{S}) = (\text{vech} \mathbf{S} - \text{vech} \boldsymbol{\Sigma}[\boldsymbol{\theta}])' \hat{\mathbf{V}}^{-1}(\text{vech} \mathbf{S} - \text{vech} \boldsymbol{\Sigma}[\boldsymbol{\theta}]),
+\end{equation}
+
+where the method finds $\hat{\boldsymbol{\theta}}_{LS}$ that minimizes $q(\boldsymbol{\theta};\mathbf{S})$. $q(\hat{\boldsymbol{\theta}}_{LS};\mathbf{S})$ approaches a chi-squared distribution ($\chi^2_{p*-q,\alpha}$, $p*=\frac{1}{2}p(p+1)$). In the case of the unweighted least square model, $\hat{\mathbf{V}}^{-1}=\mathbf{I}$.
+
+In the one-factor model, I fix the Patrilocal Marriage parameter estimate so that the model is estimable. I then evaluate a two-factor model, based on the flow chart in Figure \ref{fig:subsyn}. In the chart, there are two separate paths depending on whether women's labor is considered valuable. These paths indicate that if women's labor is not valued, there will be sex ratio alterations in that society, and if it is valuable, polygyny is more likely. I separate the variables measuring these two into separate factors, then allow the other variables to be estimated with both of those factors. Finally, I create a two-factor model that assumes that factor 1 and factor 2 are both affected by a third factor - the second order CFA for the two factors. The models are written out in Table \ref{tab:cfamodels}.
+
+\begin{table}[htb]
+\footnotesize
+    \centering
+        \caption{Linear Combination Equations for CFA Models}
+    \begin{tabular}{l|r|r}
+      &  One-Factor Model & Two-Factor Models \\
+     \hline
+    Polygyny & $y_1 = \lambda_1 f_1 + \epsilon_1$ & $y_1 = f_2 + \epsilon_1$  \\
+    Laws/Customs Favoring Males & $y_2 = \lambda_2 f_1 + \epsilon_2$ &  $y_2 = \lambda_{21} f_1 + \lambda_{22} f_2 + \epsilon_2$  \\
+    Bride Price/Dowry & $y_3 = \lambda_3 f_1 + \epsilon_3$ & $y_3 = \lambda_{31} f_1 + \lambda_{32} f_2 + \epsilon_3$  \\
+    Property Rights & $y_4 = \lambda_4 f_1 + \epsilon_4$ & $y_4 = \lambda_{41} f_1 + \lambda_{42} f_2 + \epsilon_4$  \\    
+    Cousin Marriage & $y_5 = \lambda_5 f_1 + \epsilon_5$ & $y_5 = \lambda_{51} f_1 + \lambda_{52} f_2 + \epsilon_5$  \\
+    Age of Marriage & $y_6 = \lambda_6 f_1 + \epsilon_6$ & $y_6 = \lambda_{61} f_1 + \lambda_{62} f_2 + \epsilon_6$  \\
+    Legal Exoneration for Rapists & $y_7 = \lambda_7 f_1 + \epsilon_7$ & $y_7 = \lambda_{71} f_1 + \lambda_{72} f_2 + \epsilon_7$   \\
+    Son Preference & $y_8 = \lambda_8 f_1 + \epsilon_8$ & $y_8 = \lambda_{81} f_1 + \lambda_{82} f_2 + \epsilon_8$  \\
+    Patrilocal Marriage & $y_9 =  f_1 + \epsilon_9$ & $y_9 = \lambda_{91} f_1 + \lambda_{92} f_2 + \epsilon_9$   \\
+    Overall Violence & $y_{10} = \lambda_{10} f_1 + \epsilon_{10}$ & $y_{10} = \lambda_{101} f_1 + \lambda_{102} f_2 + \epsilon_{10}$   \\
+    Societal Santion of Femicide & $y_{11} = \lambda_{11} f_1 + \epsilon_{11}$ & $y_{11} = f_1 + \epsilon_{11}$  \\
+    \hline
+    \emph{Only Second-Order CFA} & & ($f_1 = \beta_1 f_3 + e_1$, $f_2 = \beta_2 f_3 + e_2$) \\
+    \end{tabular}
+    \label{tab:cfamodels}
+\end{table}
+
+\subsection{Results}
+
+The analyses are originally performed in SPSS Amos and SAS Proc Callis, but I turn to R's Lavaan package to estimate the parameters and $R^2$ values once I choose which CFA model to pursue. I first assess the fit of each of the CFA models, then proceed to discussing the results of the model chosen.
+
+In order to assess the models, I estimate four measures of fit. SAS and SPSS do not output the $\chi^2$ statistic when the unweighted least square estimator is used. Because the $\chi^2$ statistic is not always an accurate measure of model fit, I evaluate other measures, particularly the Adjusted Goodness of Fit (AGFI), the Normed-Fit Index (NFI), the Standardized Root Mean Square Residual (SRMR), and the Average Value Explained (AVE). 
+The AGFI measures the ``proportion of variance accounted for by the estimated population covariance" \cite{parry}, but should be evaluated cautiously because it favors a more parsimonious model. The NFI gives the percentage that the model improves the fit from the null model. The SRMR measures the difference between the $\mathbf{S}$ matrix for the data and the $\boldsymbol{\Sigma}(\hat{\boldsymbol{\theta}})$ estimated from the model. Finally, the AVE is the average of the $R^2$ values in the factor, which indicate how much variation is explained for each variable by the factor(s).
+
+Table \ref{diag} gives both the rules for each fit diagnostic, as well as the estimated values for each model. From these estimates, I find that all three of the models fit well. The two-factor models fit only marginally better than the one-factor model. However, because the theory points heavily towards the one-factor model, and it fits sufficiently for all estimated statistics, I determine that the one-factor model should be used.
+
+% https://www.cscu.cornell.edu/news/Handouts/SEM_fit.pdf
+\begin{table}[htb]
+    \centering
+    \caption{Model Fit for Different CFA's}
+    \footnotesize
+    \begin{tabular}{l|r|r|r|r}
+      & \multicolumn{4}{l}{\textbf{Diagnostics}} \\
+     \hline
+     \textbf{CFA} & AGFI & NFI & SRMR & AVE \\
+     Rule for Good Fit & AGFI $\geq$ 0.90 & NFI $\geq$ 0.95 & SRMR $<$ 0.08  & AVE $>$0.5 \\
+    \hline
+    One-Factor Model & 0.989 & 0.990 & 0.053 & 0.499  \\
+    Two-Factor Model & 0.994 & 0.993 & 0.042 & 0.537  \\
+    Two-Factor Second & 0.993 & 0.993 & 0.044 & 0.548 \\
+    \end{tabular}
+    \label{diag}
+\end{table}
+
+The results of the one-factor model are represented in Figure \ref{cfavis} and Table \ref{res}. I find that the RMSEA = 0.000 and CFI = 1.000, indicators that the model fits well. From Figure \ref{cfavis}, I observe that high levels of variation in the individual variables are described by the single factor. This is confirmed by the results in Table \ref{res}. All p-values for the coefficient estimates in the CFA are significant, indicating that all of the variables are significantly affected by the factor. Additionally, many of the $R^2$ values are decently high, indicating that a large proportion of the variation in the individual variables can be explained by the factor. The exceptions to this are Rape Exemption and Son Preference, with $R^2$ values around 0.1. However, in general the single factor appears to describe the variation in the variables well.
+
+\begin{figure}
+\centering
+  \textbf{Confirmatory Factor Analysis Visual}\par\medskip
+  \includegraphics[width=12cm,height=7cm,trim={0cm 1cm 0cm 1cm},clip]{CFA.pdf}
+  \caption{Results show that high amounts of variation in the indicators are described by the single factor. Rape Exemption and Son Preference are the exceptions.}
+  \label{cfavis}
+\end{figure}
+
+\begin{table}[htb]
+    \centering
+    \caption{Estimates from the One-Factor CFA Model}
+    \footnotesize
+    \begin{tabular}{l|r|r|r|r|r}
+     Variable & Estimate & Standard Error & z-value & p-value & $R^2$ \\
+     \hline
+     Patrilocality & 1.00 & & & & 0.46 \\
+     Age of Marriage & 1.33 & 0.09 & 15.16 & 0.00 & 0.38 \\
+     Bride Price/Dowry & 1.519 & 0.10 & 15.70 & 0.00 & 0.75 \\
+     Polygyny & 2.32 & 0.14 & 16.58 & 0.00 & 0.80 \\
+     Violence & 0.956 & 0.072 & 13.37 & 0.00 & 0.46 \\
+     Femicide & 0.621 & 0.05 & 10.43 & 0.00 & 0.36 \\
+     Property Rights & 1.49 & 0.10 & 15.632 & 0.00 & 0.67 \\
+     Cousin Marriage & 1.27 & 0.09 & 14.95 & 0.00 & 0.34 \\
+     Son Preference & 0.45 & 0.06 & 8.20 & 0.00 & 0.12 \\
+     Rape Exemption & 0.23 & 0.05 & 4.59 & 0.00 & 0.09 \\
+     Laws/Customs Favoring Males & 1.84 & 0.11 & 16.28 & 0.00 & 0.89 \\
+    \end{tabular}
+    \label{res}
+\end{table}
+
+\subsection{Results for Partially-Simulated Data}
+
+One common issue with country-level data is that it is more difficult to collect data from less developed and more corrupt or violent countries. This difficulty results in one of two things: 1) data is missing altogether or 2) data is available but poorly measured or estimated. I therefore test the fit of the one-factor model from the CFA proposed and implemented above with the same dataset, but with random changes. 
+
+This is done by randomly selecting 1\%, 5\%, 10\%, 25\%, 50\%, and 90\% of the countries, using draws from a Bernoulli distribution, with probability of a success equal to each of these percentages. I then create two data sets for each percentage value. In the first, I delete the entire row of observations if the corresponding Bernoulli draw was 1. Then I create a second data set for each where if a row's corresponding Bernoulli draw is 1, I replace the observed values with randomly drawn values from a Binomial distribution, with the number of trials equal to the number of values in each scale.
+
+I find that for both types of partially-simulated data, the RMSEA, CFI, and SRMR estimates stay essentially the same until the percentage level is high enough that the algorithm cannot estimate anymore.
+
+When the data are randomly missing, the $R^2$ value estimates are similar and all variable estimates remain significant until 50\% of the data is missing. Once that level is missing, the model will no longer estimate. When the data are randomly reassigned values, the $R^2$ values decrease as I increase the percentage of the data that is randomly reassigned. Again, once 50\% of the data is ``messy", I run into problems with estimation. I get negative $R^2$ values, and all of the variable estimates become insignificant in the model. 
+
+I find from this simulation study that lower levels of missing data or low-quality data are not too concerning in combining these variables into a single factor. However, once we get high levels of inaccurate estimates, we should be more cautious in the CFA model. Overall, the CFA model is fairly robust to the difficulties faced in measurements for country level data.
+
+\section{Discussion and Conclusion}
+
+In this study, I find that the combination of the 11 indicators of subordination of women at the household level into one factor is a well fit model, using a confirmatory factor analysis. While the path analysis does not confirm the theory of the causal relationship, I attribute that largely to the variables being structured differently than the phenomena in the theory. Future studies should evaluate the causal theory further by finding variables that can be better separated to fit the theory. I also recommend that future research evaluates how well the actual calculation of the scale represents its individual indicators. Overall, I find sufficient evidence to conclude that the single factor fits the data well and significantly describes variation in the individual variables. These results are robust to lower levels, at least 25\% and under, of missing or poor-quality data. 
+
+\begin{thebibliography}{99}
+
+\bibitem{albright} Albright, Jeremy J., and Hun Myoung Park. ``Confirmatory factor analysis using amos, LISREL, Mplus, SAS/STAT CALIS." (2009).
+
+\bibitem{forero} Forero, Carlos G., Alberto Maydeu-Olivares, and David Gallardo-Pujol. "Factor analysis with ordinal indicators: A Monte Carlo study comparing DWLS and ULS estimation." Structural Equation Modeling 16, no. 4 (2009): 625-641.
+
+\bibitem{li} Li, Yingruolan Li. ``Confirmatory Factor Analysis with Continuous and Ordinal Data: An Empirical Study of Stress Level." (2014).
+
+\bibitem{parry}
+Parry, Stephen. ``Fit Statistics commonly reported for CFA and SEM." Cornell University Statistical Consulting Unit. \url{https://www.cscu.cornell.edu/news/Handouts/SEM_fit.pdf}.
+
+\bibitem{womanstats} WomanStats Project Database (2018). The WomanStats Project. \url{http://www.womanstats.org}.
+
+\end{thebibliography}
+
+\newpage
+\appendix
+\section{R Code}
+
+\VerbatimInput{synR.R}
+
+\section{SAS Code}
+\VerbatimInput{synsas.txt}
+
+\section{SPSS ``Code"}
+\begin{figure}[H]
+\centering
+\includegraphics{synspss.png}
+\end{figure}
+
+\end{document}
+

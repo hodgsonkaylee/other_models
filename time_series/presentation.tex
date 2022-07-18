@@ -1,0 +1,252 @@
+\documentclass[10pt]{beamer}
+
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\title{Solar Power Savings}
+\subtitle{A Time Series Analysis}
+% \date{\today}
+\date{}
+\author{Kaylee Hodgson and Michael Christiansen}
+\institute{Brigham Young University}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.pdf}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}[fragile]{Background}
+\begin{itemize}
+\item Solar energy sources have become an excellent, environmentally friendly alternative to fossil fuels, especially with the increasing demand for energy in a modern and highly industrialized society.
+\item Solar energy is particularly appealing for homeowners who can, in the long run, save money by using solar energy instead of making monthly payments to a power company that uses fossil fuels.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Motivation}
+\begin{enumerate}
+\item Sales Tactics
+\begin{itemize}
+\item Solar companies look for sales tactics to convince customers to buy solar panels for their homes.
+\item The upfront cost for solar panels is large, which makes it difficult to convince customers that solar panels could end up saving them money. 
+\end{itemize}
+\item Customer Savings
+\begin{itemize}
+\item Customers would benefit from being able to more accurately budget for the cost of power
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Questions of Interest}
+\begin{enumerate}
+\item How much per month do customers with solar panels save on average compared to those without?
+\item How much time on average will it take for a customer who has bought solar panels to recoup the initial cost (in this case \$8,000)?
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Goal of Analysis}
+\begin{enumerate}
+\item Inference: Determine how much the customer will save on average by switching to solar
+\item Prediction: Predict what bills are going to be in the future to determine how long it will take to recoup the \$8,000
+\end{enumerate}
+\end{frame}
+
+\section{Exploring the Data}
+
+\begin{frame}{The Data}
+\itemize
+\item This dataset has 51 sequential observations of the monthly power bills for a single customer, along with an indicator for whether the customer had solar panels that month or not. 
+\item The first 29 months the customer did not have solar panels. The last 22 months, they did.
+\end{frame}
+
+\begin{frame}{The Data}
+\begin{figure}
+\begin{center}
+\caption{Customer's Monthly Power Bill}
+\includegraphics[width=7cm,height=5cm]{eda1.png}
+\label{splot}
+\smallskip
+\end{center}
+\end{figure} 
+The data is correlated in time, so a simple linear regression model, which assumes independence of the observations, will give inaccurate uncertainty measurements.
+\end{frame}
+
+\section{Methods}
+
+\begin{frame}{Correlated Generalized Least Squares Model}
+Generalized Least Squares does not assume a distribution
+\begin{equation}
+Y \sim N(X\beta,\sigma^2R) \Rightarrow Y \sim N(X\beta,\Sigma) ,
+\end{equation}
+where $R$ depends on the covariance structure
+\smallskip
+We estimate the MLE's of $\hat{\beta}$ and the $\hat{\sigma}^2$ as follows:
+\begin{equation}
+\hat{\beta} = (X'R^{-1}X)^{-1}X'R^{-1}Y
+\end{equation}
+\begin{equation}
+\hat{\sigma}^2=\frac{1}{N}(Y-X\beta)'R^{-1}(Y-X\beta)
+\end{equation}
+\end{frame}
+
+\begin{frame}{Covariance Structures}
+\begin{itemize}
+\item Lag-1 Autoregressive Process: adjusts the correlation value according to the distance of the observations, decreasing the correlation as the time between two observations increases
+\item Moving Average Process: only accounts for correlation between consecutive time points
+\item Exponential Correlation: can be used for unequally spaced time periods
+\end{itemize}
+Because our data is equally spaced and we suspect that correlation decreases as time between observations increases, we choose the Lag-1 Autoregressive Process.
+\end{frame}
+
+\begin{frame}{Lag 1 Autoregressive}
+Covariance Structure
+\begin{equation}
+R = \sigma^2
+\begin{bmatrix} 
+1 \quad \phi \quad \phi^2 \quad \hdots \quad \phi^{T-1} \\ 
+\phi \quad 1 \quad \phi \quad \hdots \quad \phi^{T-2} \\ 
+\vdots \quad \quad \vdots \quad \quad \ddots \quad \quad \vdots \quad \quad \vdots \\
+\phi^{T-1} \quad \hdots \quad \hdots \quad \hdots \quad 1 \\
+\end{bmatrix}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Model Variables}
+\itemize
+\item In our model, we decided to include fixed effects for whether a customer is using solar power, and interaction terms between power type and the seasons of Summer and Winter
+\item These interactions were included due to seasonal variability in the efficiency of different power types.
+\item Our covariance structure is based on time between observations
+\end{frame}
+
+\begin{frame}{Gaussian Process Regression Assumptions}
+\begin{itemize}
+\item Data is multivariate normal - residuals should be normally distributed
+\item Constant variance
+\end{itemize}
+To check the assumptions of the model, we used Cholesky Decomposition to decorrelate the residuals
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm,height=4cm]{modas.pdf}
+\smallskip
+\caption{Model Assumptions Check}
+\end{center}
+\end{figure} 
+\end{frame}
+
+\begin{frame}{Model Fit}
+Results from Cross-Validation Study
+\begin{itemize}
+\item Mean Bias = -0.557
+\item RPMSE = 34.38
+\item Mean Prediction Interval Coverage = 0.842
+\item Mean Prediction Interval Width = 104.098
+\end{itemize}
+Percentage of the Variance Explained Using the Decorrelated Residuals
+\itemize
+\item R-squared = 0.77
+\end{frame}
+
+\section{Results}
+
+\begin{frame}{Data with Model Fitted}
+\begin{figure}
+\begin{center}
+\includegraphics[width=8cm,height=6cm]{fitted.png}
+\smallskip
+\caption{Model Fitted to Power Bill Data}
+\end{center}
+\end{figure} 
+\end{frame}
+
+\begin{frame}{Model Coefficients}
+\begin{table}[H]
+\begin{center}
+\caption{AR(1) Model Coefficient Estimates}
+\begin{tabular}{l | l c c }
+\hline
+Coefficient &  Estimate  &   95\% CI & p-value \\
+\hline
+(Intercept)  &    110.241309 & (93.25474,127.22788) & 0.0000 \\
+SolarY       & -87.910388 & (-113.49516,-62.32561) & 0.0000 \\
+SolarN:Winter &  2.642468 & (-23.84270,29.12763) & 0.8416 \\
+SolarY:Winter &  74.717153 & (41.06610,108.36821) & 0.0001 \\
+SolarN:Summer &  70.056139 & (39.57363, 100.53865) & 0.0000 \\
+SolarY:Summer &  8.863714 & (-22.76523,40.49266) & 0.5753 \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+\begin{table}[H]
+\begin{center}
+\caption{AR(1) Model Variance Component Estimates}
+\begin{tabular}{l | l c }
+\hline
+ &  Estimate  &   95\% CI \\
+\hline
+$\sigma$ & 28.08791 & (23.07942,34.18329) \\
+$\phi$ & 0.1006577 & (-0.2019074,0.3856839) \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+\end{frame}
+
+\begin{frame}{Inference}
+A Customer saves \$1022.28 on average per year from switching to Solar, approximately \$85.19 per month
+\begin{figure}
+\begin{center}
+\includegraphics[width=7cm,height=5cm]{averagesavings.pdf}
+\smallskip
+\caption{Average Savings Each Month of the Year from Switching to Solar}
+\end{center}
+\end{figure} 
+\end{frame}
+
+\begin{frame}{Prediction}
+It will take a customer on average just over 8 years (96.4 months) to recoup the \$8,000, which a 95\% prediction interval of 91 months to 104 months.
+\begin{figure}
+\begin{center}
+\includegraphics[width=7cm,height=5cm]{money_saved.png}
+\smallskip
+\caption{100 Samples from Simulation Calculating amount saved with Time. Red Line at \$8000 corresponds to installation costs of Solar Panels.}
+\end{center}
+\end{figure} 
+\end{frame}
+
+\begin{frame}{Conclusions}
+\itemize
+\item We find how much on average a customer will save by switching to solar, and predict how long it will take to recoup the initial \$8,000 cost of the solar panels
+\item These findings inform both the sales tactics of solar companies and the customer's budgeting for the initial cost of the panels and the subsequent monthly payments.
+\end{frame}
+
+\begin{frame}{Shortcomings and Future Research}
+Shortcomings of the Model:
+\begin{itemize}
+\item Doesn't account for unequal time periods
+\item Model doesn't fully capture extreme data values
+\end{itemize}
+Future Research:
+\begin{itemize}
+\item This dataset had only the power bills for one customer living in Provo, UT. The model should be fit using additional customers to determine if these findings are generalizable
+\end{itemize}
+\end{frame}
+
+\end{document}
+
+
+
