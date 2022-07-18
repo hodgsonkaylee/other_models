@@ -1,5 +1,5 @@
 # other_models
-This repository contains projects that demonstrate some of my other modeling skills that were not included in bayesian_models, generalized_linear_models, or spatial_analysis.
+This repository contains projects that demonstrate some of my other modeling skills that were not included in bayesian_models, generalized_linear_models, or spatial_analysis repositories. Each folder contains the data, R code, LaTex file to generate the report, and the final pdf report. The projects in each folder are described below.
 
 **dimension_reduction**
 
